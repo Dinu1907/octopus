@@ -2,7 +2,7 @@ name: Multi-Architecture Docker Build and Push
 
 on:
   push:
-    branches: ["main "]
+    branches: ["main"]
   pull_request:
     branches: ["main"]
 
@@ -23,17 +23,11 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
       - name: Build and push Docker images
         uses: docker/build-push-action@v5
         with:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: |
-            ${{ secrets.DOCKER_USERNAME }}/my-image:latest
-            ${{ secrets.DOCKER_USERNAME }}/my-image:latest-arm64
-            ${{ secrets.DOCKER_USERNAME }}/my-image:latest-amd64
+          tags: dinesh0724/app:latest
 
