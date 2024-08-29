@@ -32,8 +32,8 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            your-dockerhub-username/your-repo:latest
-            your-dockerhub-username/your-repo:latest-${{ matrix.architecture }}
+            your-dockerhub-username/app:latest
+            your-dockerhub-username/app:latest-${{ matrix.architecture }}
 
       - name: Image digest
         run: echo ${{ steps.build-and-push.outputs.digest }}
