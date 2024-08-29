@@ -2,11 +2,10 @@ name: Build and Push Multi-Arch Docker Image
 
 on:
   push:
-    branches:
-      - main
+    branches:   ["main"]
+     
   pull_request:
-    branches:
-      - main
+    branches:   ["main"]
 
 jobs:
   build:
@@ -33,7 +32,7 @@ jobs:
           context: .
           push: true
           platforms: linux/amd64,linux/arm64,linux/arm/v7
-          tags: dinesh0724/app:latest  # Replace with your actual Docker Hub username and repository name
+          tags: dinesh0724/app:latest  
 
       - name: Verify Docker Image
         run: |
