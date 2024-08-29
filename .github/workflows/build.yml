@@ -1,5 +1,4 @@
-name: Multi-Architecture Docker Build and Push
-
+name: Multi-Architecture 
 on:
   push:
     branches: ["main"]
@@ -8,28 +7,46 @@ on:
 
 jobs:
   build-and-push:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        arch: [amd64, arm64]
+        exclude:
+          - os: windows-latest
+            arch: arm64  # Windows may not support ARM64
+          - os: macos-latest
+            arch: amd64  # Modify based on your requirements
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Set up Docker Buildx
+        if: matrix.os == 'ubuntu-latest'  # Only set up Buildx on Ubuntu (Linux)
         uses: docker/setup-buildx-action@v2
 
       - name: Log in to Docker Hub
+        if: matrix.os == 'ubuntu-latest'  # Log in to Docker Hub only on Ubuntu (Linux)
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and push Docker images
+        if: matrix.os == 'ubuntu-latest'  # Only build Docker images on Linux
         uses: docker/build-push-action@v5
         with:
           context: .
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/${{ matrix.arch }}
           push: true
           tags: |
-            dinesh0724/app:latest
-            dinesh0724/app:latest-amd64
-            dinesh0724/app:latest-arm64
+            dinesh0724/app:${{ matrix.os }}-${{ matrix.arch }}
+      
+      - name: Windows-specific task
+        if: matrix.os == 'windows-latest'
+        run: echo "Running tasks on Windows"
+
+      - name: Mac-specific task
+        if: matrix.os == 'macos-latest'
+        run: echo "Running tasks on macOS"
