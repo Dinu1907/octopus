@@ -39,6 +39,6 @@ jobs:
           context: . 
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: dockerhub_dinesh0724/repository:latest
+          tags: dockerhub_username/octopus:latest
 
       
