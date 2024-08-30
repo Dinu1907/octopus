@@ -39,4 +39,4 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            dockerhub_username/octopus:latest-${{ matrix.os }}-${{ matrix.arch }}
+            ${{ secrets.DOCKER_USERNAME }}/octopus:latest-${{ matrix.os }}-${{ matrix.arch }}
